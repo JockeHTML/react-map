@@ -1,0 +1,27 @@
+.search {
+  position: absolute;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 400px;
+  z-index: 10;
+}
+
+.search input {
+  padding: 0.5rem;
+  font-size: 1.5rem;
+  width: 330px;
+}
+
+.search-results {
+  padding: 16px;
+  margin-top: 16px;
+  overflow: auto;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  height: 250px;
+  width: 315px;
+  background-color: white;
+}
