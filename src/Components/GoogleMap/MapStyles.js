@@ -7,5 +7,10 @@ export const mapContainerStyle = {
 export const options = {
   styles: mapStyles,
   disableDefaultUI: true,
-  zoomControl: "true",
+  zoomControl: true,
+};
+
+export const center = {
+  lat: 45.421532,
+  lng: -75.697189,
 };

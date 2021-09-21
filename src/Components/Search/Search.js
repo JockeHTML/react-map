@@ -30,6 +30,8 @@ export default function Search(props) {
     setTitleSearch(filteredTitle);
   };
 
+  //<----------COORDINATES FUNCTION---------->
+  //picking up the cords from the clicked link in my search
   const getCoordinates = (data) => {
     props.panTo(data.geometry.coordinates);
   };

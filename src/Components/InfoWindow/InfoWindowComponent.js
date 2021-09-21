@@ -1,21 +1,25 @@
 import React from "react";
 import { InfoWindow } from "@react-google-maps/api";
 
-const InfoWindowComponent = (props) => {
+const InfoWindowComponent = ({ setShowBusDetails, showBusDetails }) => {
+  const removeShowBusDetails = () => {
+    setShowBusDetails([]);
+  };
+
   return (
     <InfoWindow
       onCloseClick={() => {
-        props.removeShowBusDetails();
+        removeShowBusDetails();
       }}
       position={{
-        lat: props.showBusDetails.geometry.coordinates[1],
-        lng: props.showBusDetails.geometry.coordinates[0],
+        lat: showBusDetails.geometry.coordinates[1],
+        lng: showBusDetails.geometry.coordinates[0],
       }}
     >
       <div>
-        <h2>SKATEPARK NR: {props.showBusDetails.properties.PARK_ID}</h2>
-        <h4>{props.showBusDetails.properties.NAME}</h4>
-        <p>{props.showBusDetails.properties.DESCRIPTIO}</p>
+        <h2>SKATEPARK NR: {showBusDetails.properties.PARK_ID}</h2>
+        <h4>{showBusDetails.properties.NAME}</h4>
+        <p>{showBusDetails.properties.DESCRIPTIO}</p>
       </div>
     </InfoWindow>
   );

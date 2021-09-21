@@ -1,68 +1,47 @@
 import React, { useState } from "react";
-import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import { data } from "../../data/data";
+import { GoogleMap, useLoadScript } from "@react-google-maps/api";
 import { mapContainerStyle, options, center } from "./MapStyles";
 import MarkerComponent from "../Marker/MarkerComponent";
 import InfoWindowComponent from "../InfoWindow/InfoWindowComponent";
 import Search from "../Search/Search";
 
+const libraries = ["places"];
+
 function MyComponent() {
-  //<----------STATE---------->
-  const [map, setMap] = useState([]);
+  //<----------DETAILS STATE---------->
   const [showBusDetails, setShowBusDetails] = useState([]);
 
-  //<----------ONLOAD, UNMOUNT & API---------->
-  const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
+  //<----------USE LOAD SCRIPT HOOK & API KEY---------->
+  const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    libraries,
   });
 
-  const onLoad = React.useCallback((map) => {
-    const bounds = new window.google.maps.LatLngBounds();
-    map.fitBounds(bounds);
-    setMap(map);
-  }, []);
-
-  const onUnmount = React.useCallback((map) => {
-    setMap(null);
-  }, []);
-
-  const removeShowBusDetails = React.useCallback(
-    () => setShowBusDetails([]),
-    []
-  );
-
-  //<----------REF TO THE MAP---------->
+  //<----------REF TO THE ACTUAL MAP---------->
   const mapRef = React.useRef();
   const onMapLoad = React.useCallback((map) => {
     mapRef.current = map;
-  });
+  }, []);
 
-  const [latLng, setLatLng] = useState({
-    lat: null,
-    lng: null,
-  });
-  const panTo = (lat) => {
-    setLatLng(() => {
-      return { lat: lat[0], lng: lat[1] };
-    });
-    map.panTo(latLng);
-    map.setCenter(latLng);
-  };
+  //<----------PAN TO FUNCTION WITH LAT & LNG---------->
+  //picking up the coordinates send from my search
+  const panTo = React.useCallback((cord) => {
+    console.log(cord);
+  }, []);
 
-  //<----------ONLOAD CHECKER---------->
-  if (!isLoaded) {
-    return <h1>Loading Map...</h1>;
-  }
+  //<----------LOADING CHECK---------->
+  if (loadError) return "Error";
+  if (!isLoaded) return "Loading...";
 
-  return isLoaded ? (
+  return (
     <GoogleMap
+      id="map"
       mapContainerStyle={mapContainerStyle}
-      center={{ lat: 45.4211, lng: -75.6903 }}
-      zoom={10}
-      onLoad={onLoad}
+      zoom={8}
+      center={center}
       options={options}
-      onUnmount={onUnmount}
+      onLoad={onMapLoad}
     >
       <Search panTo={panTo} />
       {data.features.map((data) => {
@@ -77,15 +56,11 @@ function MyComponent() {
 
       {showBusDetails.length !== 0 ? (
         <InfoWindowComponent
-          removeShowBusDetails={removeShowBusDetails}
           showBusDetails={showBusDetails}
+          setShowBusDetails={setShowBusDetails}
         />
       ) : null}
     </GoogleMap>
-  ) : (
-    <>
-      <h1>Error with loading map...</h1>
-    </>
   );
 }
 
