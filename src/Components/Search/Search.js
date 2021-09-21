@@ -4,6 +4,8 @@ import { data } from "../../data/data";
 import "./search.css";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "@material-ui/core";
+import glas from "../.././assets/glas.png";
+import InputAdornment from "@material-ui/core/InputAdornment";
 
 export default function Search(props) {
   const useStyles = makeStyles({
@@ -12,6 +14,10 @@ export default function Search(props) {
       marginBottom: "16px",
       cursor: "pointer",
       border: "none",
+    },
+    input: {
+      color: "#E68D00",
+      backgroundColor: "white",
     },
   });
   const classes = useStyles();
@@ -31,22 +37,30 @@ export default function Search(props) {
   };
 
   //<----------COORDINATES FUNCTION---------->
-  //picking up the cords from the clicked link in my search
+  //picking up the cords from the clicked link in my search, resetting title
   const getCoordinates = (data) => {
-    props.panTo(data.geometry.coordinates);
+    props.panTo(data);
+    setTitle("");
   };
 
   return (
     <form className="search" type="text">
       <TextField
-        style={{ backgroundColor: "white" }}
         autoComplete="off"
+        value={title}
         className={classes.input}
         onChange={handleChange}
-        label="Sök din buss"
+        label="Search"
         size="small"
         id="outlined-basic"
         variant="outlined"
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <img src={glas} alt="" />
+            </InputAdornment>
+          ),
+        }}
       />
       {title ? (
         <div className="search-results">

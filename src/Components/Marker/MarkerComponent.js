@@ -10,10 +10,10 @@ const MarkerComponent = (props) => {
       }}
       icon={{
         url: "/bus.png",
-        scaleSize: new window.google.maps.Size(20, 20),
-        anchor: new window.google.maps.Point(20, 20),
+        scaleSize: new window.google.maps.Size(0, 0),
+        anchor: new window.google.maps.Point(15, 0),
       }}
-      onClick={() => props.setShowBusDetails(props)}
+      onClick={() => props.panTo(props)}
     />
   );
 };

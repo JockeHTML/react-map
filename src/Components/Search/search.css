@@ -3,8 +3,8 @@
   top: 2rem;
   left: 50%;
   transform: translateX(-50%);
-  width: 100%;
-  max-width: 400px;
+  width: 400px;
+  max-width: 100%;
   z-index: 10;
 }
 

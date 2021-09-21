@@ -24,10 +24,19 @@ function MyComponent() {
     mapRef.current = map;
   }, []);
 
-  //<----------PAN TO FUNCTION WITH LAT & LNG---------->
-  //picking up the coordinates send from my search
-  const panTo = React.useCallback((cord) => {
-    console.log(cord);
+  //<----------PAN TO LOCATION FUNCTION WITH LAT & LNG---------->
+  //picking up the coordinates send from search
+  const panTo = React.useCallback((data) => {
+    setShowBusDetails(data);
+    const lat = parseFloat(data.geometry.coordinates[0]);
+    const lng = parseFloat(data.geometry.coordinates[1]);
+    mapRef.current.panTo({ lat: lng, lng: lat });
+    mapRef.current.setZoom(15);
+
+    /*setCoords(() => {
+      return { lat: data[0], lng: data[1] };
+    });
+    console.log(coords.lat, coords.lng);*/
   }, []);
 
   //<----------LOADING CHECK---------->
@@ -47,6 +56,7 @@ function MyComponent() {
       {data.features.map((data) => {
         return (
           <MarkerComponent
+            panTo={panTo}
             key={data.properties.PARK_ID}
             setShowBusDetails={setShowBusDetails}
             {...data}
